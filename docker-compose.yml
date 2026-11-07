@@ -1,0 +1,31 @@
+# MySQL 8 case store.            docker compose up -d
+# Optional Ollama in Docker:      docker compose --profile ollama up -d
+#                                 docker compose exec ollama ollama pull qwen2.5:7b-instruct
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: grievance
+      MYSQL_USER: grievance
+      MYSQL_PASSWORD: grievance-pass
+      MYSQL_ROOT_PASSWORD: change-this-root-password
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    ports: ["3306:3306"]
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ollama"]
+    ports: ["11434:11434"]
+    volumes: [ollama_data:/root/.ollama]
+
+volumes:
+  mysql_data:
+  ollama_data:

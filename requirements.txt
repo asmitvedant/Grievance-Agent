@@ -1,0 +1,14 @@
+# Core
+streamlit>=1.50
+SQLAlchemy>=2.0
+PyMySQL>=1.1
+cryptography>=42          # PyMySQL needs it for MySQL 8 default authentication
+requests>=2.31
+numpy>=1.26
+pandas>=2.1
+# Local embeddings + NLI cross-encoder (installs PyTorch, CPU is fine)
+sentence-transformers>=3.0
+# Tests
+pytest>=8
+# Optional: name/location redaction on top of the regex rules (set PII_BACKEND=presidio)
+# presidio-analyzer>=2.2
